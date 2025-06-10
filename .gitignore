@@ -1,0 +1,51 @@
+# Python bytecode and compiled files
+*.pyc
+__pycache__/
+.Python/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+
+# Virtual environment
+# Use a common name for your virtual environment, e.g., 'venv' or '.venv'
+venv/
+.venv/
+env/
+.env/
+
+# IDE and Editor files
+.idea/                 # JetBrains IDEs (PyCharm, IntelliJ)
+.vscode/               # VS Code settings
+*.sublime-project      # Sublime Text project files
+*.sublime-workspace    # Sublime Text workspace files
+.DS_Store              # macOS files
+Thumbs.db              # Windows thumbnails
+
+# Test artifacts
+.coverage              # Coverage.py results file
+htmlcov/               # Coverage.py HTML report directory
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# Web scraping specific outputs (adjust as needed)
+# If the scraper downloads files into a specific directory:
+downloads/
+output/
+data/
+reports/
+visualizations/ # If visualize() creates files in this directory
+*.html           # If visualization or temporary parsed HTML files are generated
+*.json           # If extracted data is saved as JSON
+*.csv            # If extracted data is saved as CSV
+*.xlsx           # If extracted data is saved as Excel
+
+# Configuration files (if they are local-specific or contain secrets)
+# This is common if you use a .env file for environment variables
+.env
+config.local.py # Example: if you have a local config that overrides default
