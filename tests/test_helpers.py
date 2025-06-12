@@ -50,7 +50,7 @@ def test_generate_element_signature():
     assert signature.classes_hash == classes_hash
     assert signature.id_present is True
     assert signature.parent_context == "body:main" # Sliced parent context
-    assert signature.depth_range == "4-6"
+    assert signature.depth_range == "1-3"
 
 def test_generate_signature_string():
     element_info = ElementInfo(

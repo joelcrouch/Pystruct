@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 from enum import Enum
+import hashlib
 
 
 class ElementType(Enum):
@@ -55,13 +56,19 @@ class ElementSignature:
 
 # (Add PatternInfo and SearchMatch here when implementing later sprints,
 # as defined in the sprint plan's Core Data Models)
-# @dataclass
-# class PatternInfo:
-#     signature: ElementSignature
-#     elements: List[ElementInfo]
-#     count: int
-#     confidence: float
-#     field_mappings: Dict[str, str]
+@dataclass
+class PatternInfo:
+    signature: ElementSignature
+    elements: List[ElementInfo]=field(default_factory=list) # List of elements matching this pattern
+    count: int =0 # Number of elements in this pattern
+    confidence: float=1.0 # How confident we are in this pattern (1.0 for exact matches)
+    field_mappings: Dict[str, str]= field(default_factory=dict) # For future use in extraction
+    
+    def __post_init__(self):
+        # Ensure count is correctly set based on elements list
+        self.count = len(self.elements)
+     
+    
 
 # @dataclass
 # class SearchMatch:
