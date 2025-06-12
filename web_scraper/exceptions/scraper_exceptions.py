@@ -41,9 +41,7 @@ class ScraperUnexpectedError(ScraperError):
     """Exception raised for any other unexpected errors during scraping."""
     pass
 
-# You
-# 
-# 
-# can add more specific exceptions as needed in later sprints, e.g.,
+
+# add more specific exceptions as needed in later sprints, e.g.,
 # class PatternDetectionError(WebScraperError): pass
 # class ExtractionError(WebScraperError): pass

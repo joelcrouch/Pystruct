@@ -135,8 +135,7 @@ def test_find_potential_patterns(simple_html_doc):
     assert patterns[p_sig][1].text == "World"
 
 
-# Re-evaluate simple_html_doc elements and counts to make these tests accurate.
-# Let's revise simple_html_doc to explicitly have two meta tags for a pattern test.
+
 @pytest.fixture
 def html_with_patterns_doc():
     html = """

@@ -64,16 +64,6 @@ def generate_element_signature(element_info: ElementInfo,
         if len(parent_parts) >= 2:
             parent_context = f"{parent_parts[0]}:{parent_parts[1][:10]}"
 
-    # Depth range for grouping similar depth elements
-    # depth_range = f"{max(0, element_info.depth-1)}-{element_info.depth+1}"
-
-    # return ElementSignature(
-    #     tag=element_info.tag,
-    #     classes_hash=classes_hash,
-    #     id_present=element_info.id is not None,
-    #     parent_context=parent_context,
-    #     depth_range=depth_range
-    # )
     depth_range_str = ""
     # The logic here should handle depth being None as well
     if depth is not None: # Use the provided 'depth' if it's not None
