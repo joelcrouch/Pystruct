@@ -1,5 +1,5 @@
 import hashlib
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from bs4 import Tag
 
 from ..core.models import ElementInfo, ElementType, ElementSignature
@@ -49,11 +49,13 @@ def classify_element(tag: str, classes: List[str], attributes: Dict[str, str]) -
 
 
 def generate_element_signature(element_info: ElementInfo,
-                              include_parent: bool = True, depth: int = 2) -> ElementSignature:
+                              include_parent: bool = True, depth: Optional[int] = None) -> ElementSignature:
     """Generate a hashable signature for element grouping"""
     # Create hash of classes
     classes_sorted = sorted(element_info.classes)
+    classes_str = ",".join(classes_sorted)
     classes_hash = hashlib.md5(",".join(classes_sorted).encode()).hexdigest()[:8]
+    
 
     # Parent context (simplified)
     parent_context = ""
@@ -63,14 +65,33 @@ def generate_element_signature(element_info: ElementInfo,
             parent_context = f"{parent_parts[0]}:{parent_parts[1][:10]}"
 
     # Depth range for grouping similar depth elements
-    depth_range = f"{max(0, element_info.depth-1)}-{element_info.depth+1}"
+    # depth_range = f"{max(0, element_info.depth-1)}-{element_info.depth+1}"
+
+    # return ElementSignature(
+    #     tag=element_info.tag,
+    #     classes_hash=classes_hash,
+    #     id_present=element_info.id is not None,
+    #     parent_context=parent_context,
+    #     depth_range=depth_range
+    # )
+    depth_range_str = ""
+    # The logic here should handle depth being None as well
+    if depth is not None: # Use the provided 'depth' if it's not None
+        start_depth = max(0, depth - 1)
+        end_depth = depth + 1
+        depth_range_str = f"{start_depth}-{end_depth}"
+    elif element_info.depth is not None: # Fallback to element_info.depth if provided 'depth' is None
+        start_depth = max(0, element_info.depth - 1)
+        end_depth = element_info.depth + 1
+        depth_range_str = f"{start_depth}-{end_depth}"
+
 
     return ElementSignature(
         tag=element_info.tag,
         classes_hash=classes_hash,
-        id_present=element_info.id is not None,
+        id_present=(element_info.id is not None and element_info.id != ""),
         parent_context=parent_context,
-        depth_range=depth_range
+        depth_range=depth_range_str
     )
     
 def generate_signature_string(element_info: ElementInfo) -> str:

@@ -3,7 +3,9 @@ import requests
 from web_scraper.core.scraper import WebScraper
 from web_scraper.config.settings import WebScrapingConfig
 from web_scraper.core.document import ParsedDocument # To check return type
-
+from web_scraper.exceptions.scraper_exceptions import (
+    ScraperHTTPError, ScraperTimeoutError, ScraperContentError, ScraperNetworkError
+)
 # Define a fixture for a default scraper instance
 @pytest.fixture
 def default_scraper():
@@ -42,7 +44,7 @@ def test_fetch_page_404_error(default_scraper, mocker):
 
     mocker.patch('requests.Session.get', return_value=mock_response)
 
-    with pytest.raises(requests.exceptions.HTTPError):
+    with pytest.raises(ScraperHTTPError): # Expect custom exception
         default_scraper.fetch_page("http://example.com/nonexistent")
 
 # def test_fetch_page_404_error(default_scraper, mocker):
@@ -61,7 +63,7 @@ def test_fetch_page_timeout(default_scraper, mocker):
     """Test fetching a page that times out."""
     mocker.patch('requests.Session.get', side_effect=requests.exceptions.Timeout("Timed out"))
 
-    with pytest.raises(requests.exceptions.Timeout):
+    with pytest.raises(ScraperTimeoutError): # Expect custom exception
         default_scraper.fetch_page("http://example.com/slow")
 
 def test_fetch_page_invalid_url(default_scraper):
@@ -85,7 +87,7 @@ def test_fetch_page_max_page_size_exceeded(default_scraper, mocker):
 
     mocker.patch('requests.Session.get', return_value=mock_response)
 
-    with pytest.raises(ValueError, match="Page too large"):
+    with pytest.raises(ScraperContentError, match="Page too large"): # Expect custom exception
         default_scraper.fetch_page("http://example.com/large-page")
 
 def test_fetch_page_excludes_tags(default_scraper, mocker):
